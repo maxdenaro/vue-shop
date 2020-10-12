@@ -119,4 +119,9 @@ export default [
     price: 30690,
     image: '/img/headphones.jpg',
   },
+  {
+    title: 'Наушники Sony',
+    price: 30690,
+    image: '/img/headphones.jpg',
+  },
 ];
