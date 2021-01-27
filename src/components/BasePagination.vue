@@ -1,8 +1,9 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow pagination__link--disabled"
-      aria-label="Предыдущая страница">
+      <a class="pagination__link pagination__link--arrow"
+      :class="{'pagination__link--disabled':page===1}"
+      aria-label="Предыдущая страница" href="#" @click.prevent="paginate(page - 1)">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
         </svg>
@@ -16,7 +17,8 @@
     </li>
     <li class="pagination__item">
       <a class="pagination__link pagination__link--arrow" href="#"
-      aria-label="Следующая страница">
+      :class="{'pagination__link--disabled':page===pages}"
+      aria-label="Следующая страница" @click.prevent="paginate(page + 1)">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
         </svg>
@@ -35,8 +37,9 @@ export default {
   },
   methods: {
     paginate(page) {
-      console.log(page);
-      this.$emit('paginate', page);
+      if (page >= 1 && page <= this.pages) {
+        this.$emit('paginate', page);
+      }
     },
   },
 };

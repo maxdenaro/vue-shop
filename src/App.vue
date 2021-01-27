@@ -3,7 +3,7 @@
 
     <ProductList :products="products" />
 
-    <BasePagination v-on:paginate="page = $event"
+    <BasePagination :page="page" @paginate="page = $event"
     :count="countProducts" :per-page="productsPerPage" />
   </section>
 </template>
