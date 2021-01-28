@@ -29,17 +29,7 @@
 
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
-        <ul class="colors">
-          <li class="colors__item" v-for="color in colors"
-            :key="color.id">
-            <label class="colors__label">
-              <input class="colors__radio sr-only"
-              type="radio" name="color" :value="color.id" v-model.number="currentColor">
-              <span class="colors__value" :style="{ background: color.code}">
-              </span>
-            </label>
-          </li>
-        </ul>
+        <ColorsList :colors="colors" :current-color.sync="currentColor" class="filter-color" />
       </fieldset>
 
       <!-- <fieldset class="form__block">
@@ -120,9 +110,13 @@
 <script>
 import categories from '../data/categories';
 import colors from '../data/colors';
+import ColorsList from './ColorsList.vue';
 
 export default {
   props: ['priceFrom', 'priceTo', 'categoryId', 'color'],
+  components: {
+    ColorsList,
+  },
   data() {
     return {
       currentPriceFrom: 0,
@@ -169,3 +163,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.filter-color {
+  --border-color: #fff;
+}
+</style>

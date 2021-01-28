@@ -66,7 +66,7 @@ export default {
 
       if (this.color) {
         filteredProducts = filteredProducts
-          .filter((product) => product.colorId === this.color);
+          .filter((product) => product.colors.some((color) => color.id === this.color));
       }
 
       return filteredProducts;
