@@ -4,7 +4,7 @@
       :key="color.id">
       <label class="colors__label">
         <input class="colors__radio sr-only"
-        type="radio" name="color" :value="color.id" v-model="compColor">
+        type="radio" :value="color.id" v-model="compColor">
         <span class="colors__value" :style="{ background: color.code}">
         </span>
       </label>

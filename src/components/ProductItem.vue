@@ -1,6 +1,6 @@
 <template>
-  <li class="catalog__item" :product="product">
-    <a class="catalog__pic" href="#">
+  <li class="catalog__item">
+    <a class="catalog__pic" href="#" @click.prevent="gotoPage('product', {id: product.id})">
       <img :src="product.image" :alt="product.title">
     </a>
 
@@ -11,7 +11,7 @@
     </h3>
 
     <span class="catalog__price">
-      {{ product.price }} ₽
+      {{ product.price | numberFormat }} ₽
     </span>
 
     <ColorsList :colors="product.colors" :current-color.sync="currentColor" />
@@ -19,10 +19,15 @@
 </template>
 
 <script>
-import ColorsList from './ColorsList.vue';
+import ColorsList from '@/components/ColorsList.vue';
+import gotoPage from '@/helpers/gotoPage';
+import numberFormat from '@/helpers/numberFormat';
 
 export default {
   props: ['product'],
+  filters: {
+    numberFormat,
+  },
   components: {
     ColorsList,
   },
@@ -30,6 +35,9 @@ export default {
     return {
       currentColor: this.product.colors[0].id,
     };
+  },
+  methods: {
+    gotoPage,
   },
 };
 </script>
