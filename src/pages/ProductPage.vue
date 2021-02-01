@@ -41,7 +41,7 @@
 
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
-              <ColorsList :colors="product.colors" :current-color.sync="product.colors[0].id"
+              <ColorsList :colors="product.colors" :current-color.sync="currentColor"
               class="product-colors" />
             </fieldset>
 
@@ -185,7 +185,11 @@ export default {
   data() {
     return {
       productAmount: 1,
+      currentColor: null,
     };
+  },
+  mounted() {
+    this.currentColor = this.product.colors[0].id;
   },
   filters: {
     numberFormat,

@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import CartIndicator from './components/CartIndicator.vue';
+import CartIndicator from '@/components/CartIndicator.vue';
 
 export default {
   components: { CartIndicator },

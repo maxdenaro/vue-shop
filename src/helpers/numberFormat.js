@@ -1,5 +1,5 @@
 export default function numberFormat(value) {
-  if (value !== 'undefined') {
+  if (typeof value === 'number') {
     return new Intl.NumberFormat().format(value);
   }
   return null;
