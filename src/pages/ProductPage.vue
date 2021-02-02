@@ -78,6 +78,7 @@
             </fieldset>
 
             <div class="item__row">
+              <ProductCounter :current-value.sync="productAmount" />
               <div class="form__counter">
                 <button type="button" aria-label="Убрать один товар">
                   <svg width="12" height="12" fill="currentColor">
@@ -175,6 +176,7 @@
 </template>
 
 <script>
+import ProductCounter from '@/components/ProductCounter.vue';
 import products from '@/data/products';
 import categories from '@/data/categories';
 import gotoPage from '@/helpers/gotoPage';
@@ -195,7 +197,7 @@ export default {
     numberFormat,
   },
   components: {
-    ColorsList,
+    ColorsList, ProductCounter,
   },
   computed: {
     product() {

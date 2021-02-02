@@ -11,21 +11,7 @@
         Артикул: {{ item.productId }}
       </span>
 
-      <div class="product__counter form__counter">
-        <button type="button" aria-label="Убрать один товар">
-          <svg width="10" height="10" fill="currentColor">
-            <use xlink:href="#icon-minus"></use>
-          </svg>
-        </button>
-
-        <input type="text" v-model.number="amount" name="count">
-
-        <button type="button" aria-label="Добавить один товар">
-          <svg width="10" height="10" fill="currentColor">
-            <use xlink:href="#icon-plus"></use>
-          </svg>
-        </button>
-      </div>
+      <ProductCounter :current-value.sync="amount" class="product__counter" />
 
       <b class="product__price">
         {{ (item.amount * item.product.price) | numberFormat }} ₽
@@ -41,10 +27,12 @@
 </template>
 
 <script>
+import ProductCounter from '@/components/ProductCounter.vue';
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
   filters: { numberFormat },
+  components: { ProductCounter },
   props: ['item'],
   computed: {
     amount: {
