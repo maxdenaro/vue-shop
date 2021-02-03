@@ -78,23 +78,7 @@
             </fieldset>
 
             <div class="item__row">
-              <ProductCounter :current-value.sync="productAmount" />
-              <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-minus"></use>
-                  </svg>
-                </button>
-
-                <input type="text" value="1" v-model.number="productAmount">
-
-                <button type="button" aria-label="Добавить один товар">
-                  <svg width="12" height="12" fill="currentColor">
-                    <use xlink:href="#icon-plus"></use>
-                  </svg>
-                </button>
-              </div>
-
+              <BaseCounter :current-value.sync="productAmount" />
               <button class="button button--primery" type="submit">
                 В корзину
               </button>
@@ -176,7 +160,7 @@
 </template>
 
 <script>
-import ProductCounter from '@/components/ProductCounter.vue';
+import BaseCounter from '@/components/BaseCounter.vue';
 import products from '@/data/products';
 import categories from '@/data/categories';
 import gotoPage from '@/helpers/gotoPage';
@@ -197,7 +181,7 @@ export default {
     numberFormat,
   },
   components: {
-    ColorsList, ProductCounter,
+    ColorsList, BaseCounter,
   },
   computed: {
     product() {
@@ -214,6 +198,18 @@ export default {
         'addProductToCart',
         { productId: this.product.id, amount: this.productAmount },
       );
+    },
+  },
+  watch: {
+    '$route.params.id': {
+      handler() {
+        if (!this.product) {
+          this.$router.push({
+            name: 'notFound',
+          });
+        }
+      },
+      immediate: true,
     },
   },
 };

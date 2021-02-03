@@ -11,7 +11,7 @@
         Артикул: {{ item.productId }}
       </span>
 
-      <ProductCounter :current-value.sync="amount" class="product__counter" />
+      <BaseCounter :current-value.sync="amount" class="product__counter" />
 
       <b class="product__price">
         {{ (item.amount * item.product.price) | numberFormat }} ₽
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import ProductCounter from '@/components/ProductCounter.vue';
+import BaseCounter from '@/components/BaseCounter.vue';
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
   filters: { numberFormat },
-  components: { ProductCounter },
+  components: { BaseCounter },
   props: ['item'],
   computed: {
     amount: {
