@@ -1,5 +1,10 @@
 <template>
-  <main class="content container">
+  <div v-if="productLoading">Загрузка товара...</div>
+  <div v-else-if="!productData">
+    Не удалось получить товар
+    <button @click.prevent="loadProducts">Повторить загрузку</button>
+  </div>
+  <main class="content container" v-else>
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -23,7 +28,7 @@
     <section class="item">
       <div class="item__pics pics">
         <div class="pics__wrapper">
-          <img width="570" height="570" :src="product.image"
+          <img width="570" height="570" :src="product.image.file.url"
           :alt="product.title">
         </div>
       </div>
@@ -41,7 +46,7 @@
 
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
-              <ColorsList :colors="product.colors" :current-color.sync="currentColor"
+              <ColorsList :colors="product.colors" :current-color.sync="compColor"
               class="product-colors" />
             </fieldset>
 
@@ -160,22 +165,28 @@
 </template>
 
 <script>
+/* eslint-disable no-return-assign */
+
 import BaseCounter from '@/components/BaseCounter.vue';
-import products from '@/data/products';
-import categories from '@/data/categories';
 import gotoPage from '@/helpers/gotoPage';
 import ColorsList from '@/components/ColorsList.vue';
 import numberFormat from '@/helpers/numberFormat';
+import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export default {
   data() {
     return {
       productAmount: 1,
       currentColor: null,
+
+      productData: null,
+      productLoading: false,
+      productLoadingFailed: false,
     };
   },
   mounted() {
-    this.currentColor = this.product.colors[0].id;
+    // this.currentColor = this.productData.colors[0].id;
   },
   filters: {
     numberFormat,
@@ -184,11 +195,19 @@ export default {
     ColorsList, BaseCounter,
   },
   computed: {
+    compColor: {
+      get() {
+        return this.productData.colors[0].id;
+      },
+      set(v) {
+        console.log(v);
+      },
+    },
     product() {
-      return products.find((product) => product.id === +this.$route.params.id);
+      return this.productData;
     },
     category() {
-      return categories.find((category) => category.id === this.product.categoryId);
+      return this.productData.category;
     },
   },
   methods: {
@@ -199,15 +218,28 @@ export default {
         { productId: this.product.id, amount: this.productAmount },
       );
     },
+    loadProduct() {
+      this.productLoading = true;
+      this.productLoadingFailed = false;
+      clearTimeout(this.loadProductsTimer);
+      this.loadProductsTimer = setTimeout(() => {
+        axios
+          .get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
+          .then((response) => this.productData = response.data)
+          .catch(() => this.productLoadingFailed = true)
+          .then(() => this.productLoading = false);
+      }, 0);
+    },
   },
   watch: {
     '$route.params.id': {
       handler() {
-        if (!this.product) {
-          this.$router.push({
-            name: 'notFound',
-          });
-        }
+        this.loadProduct();
+        // if (!this.productData) {
+        //   this.$router.push({
+        //     name: 'notFound',
+        //   });
+        // }
       },
       immediate: true,
     },

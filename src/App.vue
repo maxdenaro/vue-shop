@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="footer-bottom">
     <header class="header">
       <div class="header__wrapper container">
         <span class="header__info">Каталог</span>
@@ -114,14 +114,33 @@
 
 <script>
 import CartIndicator from '@/components/CartIndicator.vue';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
   components: { CartIndicator },
+  created() {
+    const userAccessKey = localStorage.getItem('userAccessKey');
+    if (userAccessKey) {
+      this.updateUserAccessKey(userAccessKey);
+    }
+    this.loadCart();
+  },
+  methods: {
+    ...mapActions(['loadCart']),
+    ...mapMutations(['updateUserAccessKey']),
+  },
 };
 </script>
 
 <style>
   body {
     overflow-anchor: none;
+  }
+
+  .footer-bottom {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
   }
 </style>
