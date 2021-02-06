@@ -84,8 +84,10 @@
 
             <div class="item__row">
               <BaseCounter :current-value.sync="productAmount" />
-              <button class="button button--primery" type="submit">
-                В корзину
+              <button class="button button--primery" type="submit" :disabled="productAddSending">
+                <span v-if="productAddSending">Добавляется...</span>
+                <span v-else-if="productAdded">Добавлено</span>
+                <span v-else>В корзину</span>
               </button>
             </div>
           </form>
@@ -172,6 +174,7 @@ import gotoPage from '@/helpers/gotoPage';
 import ColorsList from '@/components/ColorsList.vue';
 import numberFormat from '@/helpers/numberFormat';
 import axios from 'axios';
+import { mapActions } from 'vuex';
 import { API_BASE_URL } from '../config';
 
 export default {
@@ -183,6 +186,9 @@ export default {
       productData: null,
       productLoading: false,
       productLoadingFailed: false,
+
+      productAdded: false,
+      productAddSending: false,
     };
   },
   mounted() {
@@ -211,12 +217,21 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['addProductToCart']),
+
     gotoPage,
     addToCart() {
-      this.$store.commit(
-        'addProductToCart',
-        { productId: this.product.id, amount: this.productAmount },
-      );
+      this.productAdded = false;
+      this.productAddSending = true;
+      this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
+        .then(() => {
+          this.productAdded = true;
+          this.productAddSending = false;
+
+          setTimeout(() => {
+            this.productAdded = false;
+          }, 2000);
+        });
     },
     loadProduct() {
       this.productLoading = true;
@@ -226,7 +241,15 @@ export default {
         axios
           .get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
           .then((response) => this.productData = response.data)
-          .catch(() => this.productLoadingFailed = true)
+          .catch((error) => {
+            this.productLoadingFailed = true;
+
+            if (error.response.status === 404) {
+              this.$router.push({
+                name: 'notFound',
+              });
+            }
+          })
           .then(() => this.productLoading = false);
       }, 0);
     },
@@ -235,11 +258,6 @@ export default {
     '$route.params.id': {
       handler() {
         this.loadProduct();
-        // if (!this.productData) {
-        //   this.$router.push({
-        //     name: 'notFound',
-        //   });
-        // }
       },
       immediate: true,
     },

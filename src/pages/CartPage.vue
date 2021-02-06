@@ -57,7 +57,12 @@ export default {
   filters: { numberFormat, declOfNum },
   components: { CartItem },
   computed: {
-    ...mapGetters({ products: 'cartDetailProducts', totalPrice: 'cartTotalPrice' }),
+    ...mapGetters(
+      {
+        products: 'cartDetailProducts',
+        totalPrice: 'cartTotalPrice',
+      },
+    ),
   },
 };
 </script>

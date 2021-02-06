@@ -1,7 +1,7 @@
 <template>
   <li class="cart__item product">
       <div class="product__pic">
-        <img :src="item.product.image" width="120" height="120"
+        <img :src="item.product.image.file.url" width="120" height="120"
         srcset="img/phone-square-3@2x.jpg 2x" alt="Название товара">
       </div>
       <h3 class="product__title">
@@ -40,7 +40,7 @@ export default {
         return this.item.amount;
       },
       set(value) {
-        this.$store.commit(
+        this.$store.dispatch(
           'updateCartProductAmount',
           { productId: this.item.productId, amount: value },
         );

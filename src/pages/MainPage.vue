@@ -71,6 +71,7 @@ export default {
               categoryId: this.filterCategoryId,
               minPrice: this.filterPriceFrom,
               maxPrice: this.filterPriceTo,
+              colorId: this.color,
             },
           })
           .then((response) => this.productsData = response.data)
