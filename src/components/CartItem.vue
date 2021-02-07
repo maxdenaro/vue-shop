@@ -41,7 +41,7 @@ export default {
       },
       set(value) {
         this.$store.dispatch(
-          'updateCartProductAmount',
+          'updateCartProductsAmount',
           { productId: this.item.productId, amount: value },
         );
       },
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     deleteProduct(productId) {
-      this.$store.commit('deleteCartProduct', { productId });
+      this.$store.dispatch('deleteCartProduct', { productId });
     },
   },
 };

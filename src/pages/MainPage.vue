@@ -22,7 +22,8 @@
           <button @click.prevent="loadProducts">Повторить загрузку</button>
         </div>
 
-        <ProductList :products="products" />
+        <ProductList :products="products" v-if="products.length" />
+        <div v-else>Товаров по таким фильтрам нет</div>
 
         <BasePagination :page="page" @paginate="page = $event"
         :count="countProducts" :per-page="productsPerPage" />

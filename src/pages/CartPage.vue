@@ -14,10 +14,13 @@
         </li>
       </ul>
 
-      <h1 class="content__title">
+      <h1 class="content__title" v-if="products.length">
         Корзина
       </h1>
-      <span class="content__info">
+      <h1 class="content__title" v-else>
+        Корзина пуста
+      </h1>
+      <span class="content__info" v-if="products.length">
         {{ products.length | declOfNum(['товар', 'товара', 'товаров']) }}
       </span>
     </div>
@@ -30,7 +33,7 @@
           </ul>
         </div>
 
-        <div class="cart__block">
+        <div class="cart__block" v-if="products.length">
           <p class="cart__desc">
             Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе
           </p>

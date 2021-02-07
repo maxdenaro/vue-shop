@@ -16,7 +16,7 @@ export default new Vuex.Store({
     cartProductsData: [],
   },
   mutations: {
-    updateCartProductAmount(state, { productId, amount }) {
+    updateCartProductsAmount(state, { productId, amount }) {
       const item = state.cartProducts.find((el) => el.productId === productId);
 
       if (item) {
@@ -92,7 +92,7 @@ export default new Vuex.Store({
         });
     },
     updateCartProductsAmount(context, { productId, amount }) {
-      context.commit('updateCartProductAmount', { productId, amount });
+      context.commit('updateCartProductsAmount', { productId, amount });
 
       if (amount < 1) {
         return;
@@ -105,6 +105,27 @@ export default new Vuex.Store({
           productId: productId,
           quantity: amount,
         }, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          context.commit('updateCartProductsData', response.data.items);
+        })
+        .catch(() => {
+          context.commit('syncCartProducts');
+        });
+    },
+    deleteCartProduct(context, { productId }) {
+      context.commit('deleteCartProduct', { productId });
+
+      // eslint-disable-next-line consistent-return
+      return axios
+        .delete(`${API_BASE_URL}/api/baskets/products`, {
+          data: {
+            // eslint-disable-next-line object-shorthand
+            productId: productId,
+          },
           params: {
             userAccessKey: context.state.userAccessKey,
           },
