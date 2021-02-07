@@ -5,7 +5,7 @@
         Каталог
       </h1>
       <span class="content__info">
-        152 товара
+        {{ countProducts | declOfNum(['товар', 'товара', 'товаров']) }}
       </span>
     </div>
 
@@ -38,11 +38,13 @@
 import ProductList from '@/components/ProductList.vue';
 import BasePagination from '@/components/BasePagination.vue';
 import ProductFilter from '@/components/ProductFilter.vue';
+import declOfNum from '@/helpers/declOfNum';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 
 export default {
   components: { ProductList, BasePagination, ProductFilter },
+  filters: { declOfNum },
   data() {
     return {
       filterPriceFrom: 0,
