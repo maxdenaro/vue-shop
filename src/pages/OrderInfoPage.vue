@@ -19,7 +19,7 @@
         </li>
       </ul>
 
-      <h1 class="content__title">
+      <h1 class="content__title" v-if="orderInfo">
         Заказ оформлен <span>№ {{ orderInfo.id }}</span>
       </h1>
     </div>
@@ -33,7 +33,7 @@
             Наши менеджеры свяжутся с&nbsp;Вами в&nbsp;течение часа для уточнения деталей доставки.
           </p>
 
-          <ul class="dictionary">
+          <ul class="dictionary" v-if="orderInfo">
             <li class="dictionary__item">
               <span class="dictionary__key">
                 Получатель
@@ -77,8 +77,8 @@
           </ul>
         </div>
 
-        <div class="cart__block">
-          <OrderExtraInfo :products="products" :summ="totalPrice" />
+        <div class="cart__block" v-if="orderInfo">
+          <OrderExtraInfo :products="orderInfo.basket.items" :summ="orderInfo.totalPrice" />
         </div>
       </form>
     </section>
@@ -87,28 +87,24 @@
 
 <script>
 import OrderExtraInfo from '@/components/OrderExtraInfo.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   components: { OrderExtraInfo },
-  data() {
-    return {
-      orderInfo: this.$store.state.orderInfo,
-    };
-  },
-  created() {
-    if (this.$store.state.orderInfo && this.$store.state.orderInfo === this.$route.params.id) {
-      return;
-    }
-    this.$store.dispatch('loadOrderInfo', this.$route.params.id);
+  watch: {
+    '$route.params.id': {
+      handler() {
+        if (this.orderInfo && this.orderInfo === this.$route.params.id) {
+          return;
+        }
+        this.$store.dispatch('loadOrderInfo', this.$route.params.id);
+      },
+      immediate: true,
+    },
   },
   computed: {
-    ...mapGetters(
-      {
-        products: 'cartDetailProducts',
-        totalPrice: 'cartTotalPrice',
-      },
-    ),
+    orderInfo() {
+      return this.$store.state.orderInfo;
+    },
   },
 };
 </script>

@@ -3,8 +3,8 @@
     <ul class="cart__orders">
       <li class="cart__order" v-for="item in products" :key="item.productId">
         <h3>{{ item.product.title }}</h3>
-        <b>{{ (item.amount * item.product.price) | numberFormat }} ₽</b>
-        <span>Артикул: {{ item.productId }}</span>
+        <b>{{ ((item.amount || item.quantity) * item.product.price) | numberFormat }} ₽</b>
+        <span>Артикул: {{ item.productId || item.product.id }}</span>
       </li>
     </ul>
 

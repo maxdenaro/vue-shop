@@ -4,10 +4,14 @@
       <div class="header__wrapper container">
         <span class="header__info">Каталог</span>
 
-        <a class="header__logo" href="#">
+        <span class="header__logo" v-if="pageRoute === 'main'">
           <img src="img/svg/logo-tech.svg"
           alt="Логотип интернет магазина Технозавррр" width="190" height="33">
-        </a>
+        </span>
+        <router-link :to="{name: 'main'}" class="header__logo" href="#" v-else>
+          <img src="img/svg/logo-tech.svg"
+          alt="Логотип интернет магазина Технозавррр" width="190" height="33">
+        </router-link>
 
         <a class="header__tel" href="tel:8 800 600 90 09">
           8 800 600 90 09
@@ -119,12 +123,18 @@ import { mapActions, mapMutations } from 'vuex';
 export default {
   components: { CartIndicator },
   created() {
+    console.log(this.$route);
     const userAccessKey = localStorage.getItem('userAccessKey');
     if (userAccessKey) {
       this.updateUserAccessKey(userAccessKey);
     }
 
     this.loadCart();
+  },
+  computed: {
+    pageRoute() {
+      return this.$route.name;
+    },
   },
   methods: {
     ...mapActions(['loadCart']),

@@ -116,6 +116,9 @@ export default {
     },
   },
   computed: {
+    orderInfo() {
+      return this.$store.state.orderInfo;
+    },
     ...mapGetters(
       {
         products: 'cartDetailProducts',
