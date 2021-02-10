@@ -51,7 +51,7 @@
 
         <div class="cart__block">
 
-          <OrderExtraInfo :products="products" :summ="totalPrice" />
+          <OrderExtraInfo :products="orderData" />
 
           <button class="cart__button button button--primery" type="submit">
             Оформить заказ
@@ -119,10 +119,20 @@ export default {
     orderInfo() {
       return this.$store.state.orderInfo;
     },
+    orderData() {
+      // eslint-disable-next-line arrow-body-style
+      return this.products.map((item) => {
+        return {
+          title: item.product.title,
+          quantity: item.amount,
+          price: item.product.price,
+          id: item.productId,
+        };
+      });
+    },
     ...mapGetters(
       {
         products: 'cartDetailProducts',
-        totalPrice: 'cartTotalPrice',
       },
     ),
   },

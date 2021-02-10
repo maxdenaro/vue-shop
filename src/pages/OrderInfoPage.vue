@@ -78,7 +78,7 @@
         </div>
 
         <div class="cart__block" v-if="orderInfo">
-          <OrderExtraInfo :products="orderInfo.basket.items" :summ="orderInfo.totalPrice" />
+          <OrderExtraInfo :products="orderData" />
         </div>
       </form>
     </section>
@@ -104,6 +104,17 @@ export default {
   computed: {
     orderInfo() {
       return this.$store.state.orderInfo;
+    },
+    orderData() {
+      // eslint-disable-next-line arrow-body-style
+      return this.orderInfo.basket.items.map((item) => {
+        return {
+          title: item.product.title,
+          quantity: item.quantity,
+          price: item.product.price,
+          id: item.product.id,
+        };
+      });
     },
   },
 };

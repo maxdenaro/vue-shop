@@ -123,7 +123,6 @@ import { mapActions, mapMutations } from 'vuex';
 export default {
   components: { CartIndicator },
   created() {
-    console.log(this.$route);
     const userAccessKey = localStorage.getItem('userAccessKey');
     if (userAccessKey) {
       this.updateUserAccessKey(userAccessKey);
